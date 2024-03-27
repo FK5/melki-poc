@@ -1,10 +1,9 @@
 'use client'
 import React from 'react';
-import { Space, Table, Tag, Input } from 'antd';
-import { Button, Flex } from 'antd';
+import { Table, Tag, Input } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
-import Link from 'next/link';
-import ActionButton from '@/app/components/actionButton';
+import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
+import { CustomInput } from '@/app/components/CustomComponents/CustomInput';
 
 // add these to divs flex-shrink-0 flex-grow-0 flex-basis-auto
 
@@ -108,10 +107,10 @@ export default function Lawyers() {
     };
     return (
         <>
-            <div className='flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-2 px-2 h-full'>
+            <div className='flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-4 px-4 h-full'>
                 <div className='flex justify-between'>
-                    <Input className="w-80" placeholder="Search..." />
-                    <ActionButton link={"/dashboard/lawyers/add"} classes={'text-white w-24'} icon={<FormOutlined />} text={"Create"} type={"primary"} />
+                    <CustomInput classes="w-80" placeholder="Search..." />
+                    <CustomButton link={"/dashboard/lawyers/add"} size={"large"} classes={'w-24'} icon={<FormOutlined />} text={"Create"} color={"primary"} />
                 </div>
                 <Table columns={columns} scroll={{ y: 350 }} dataSource={data} onChange={onChange}/>
             </div>

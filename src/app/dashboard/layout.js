@@ -1,22 +1,5 @@
 'use client'
 
-import { LuLayoutDashboard } from "react-icons/lu";
-import { GrGroup } from "react-icons/gr";
-import { FaRegFileLines } from "react-icons/fa6";
-import { TbBook2 } from "react-icons/tb";
-import { MdOutlineTaskAlt } from "react-icons/md";
-import { FaBalanceScale } from "react-icons/fa";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { FaChartLine } from "react-icons/fa";
-import { TbUserShield } from "react-icons/tb";
-
-import { CgProfile } from "react-icons/cg";
-import { MdOutlineNotificationsNone } from "react-icons/md";
-import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-
-
-import { Input, Badge } from "antd"
-
 import { LeftOutlined } from '@ant-design/icons';
 import { RightOutlined } from '@ant-design/icons';
 import { useState } from "react";
@@ -26,6 +9,8 @@ import Image from 'next/image'
 
 import { motion } from "framer-motion"
 
+import { navItems } from "../variables/NavBarItems";
+import { UserToolbar } from '../components/UserToolbar';
 
 export default function DashboardLayout({ children }) {
 
@@ -48,26 +33,12 @@ export default function DashboardLayout({ children }) {
         closed: { width: '93%' },
     };
 
-    const navItems = [
-        { menuName: 'Dashboard', pathName: '/dashboard', menuIcon: <LuLayoutDashboard fontSize={27} /> },
-        { menuName: 'Clients', pathName: '/dashboard/clients', menuIcon: <GrGroup fontSize={27} /> },
-        { menuName: 'Registry', pathName: '/dashboard/registry', menuIcon: <FaRegFileLines fontSize={27} /> },
-        { menuName: 'Matters', pathName: '/dashboard/matters', menuIcon: <TbBook2 fontSize={27} /> },
-        { menuName: 'Tasks', pathName: '/dashboard/tasks', menuIcon: <MdOutlineTaskAlt fontSize={27} /> },
-        { menuName: 'Hearings', pathName: '/dashboard/hearings', menuIcon: <FaBalanceScale fontSize={27} /> },
-        { menuName: 'Calendar', pathName: '/dashboard/calendar', menuIcon: <FaRegCalendarAlt fontSize={27} /> },
-        { menuName: 'Accounting', pathName: '/dashboard/accounting', menuIcon: <FaChartLine fontSize={27} /> },
-        { menuName: 'Lawyers', pathName: '/dashboard/lawyers', menuIcon: <GrGroup fontSize={27} /> },
-        { menuName: 'Log', pathName: '/dashboard/logs', menuIcon: <FaRegFileLines fontSize={27} /> },
-        { menuName: 'Admin', pathName: '/dashboard/admin', menuIcon: <TbUserShield fontSize={27} /> },
-    ];
-
     return (
         <div className="flex h-screen">
             <motion.div
                 animate={isSideBarCollapsed ? 'closed' : 'opened'}
                 variants={variants1}
-                transition={{ duration: 0.5 }} // Adjust duration as needed
+                transition={{ duration: 3 }} // Adjust duration as needed
                 className={`bg-white border-b-gray border-e-2 w-1/6`}
             >
                 <div className="flex flex-col h-full">
@@ -80,7 +51,7 @@ export default function DashboardLayout({ children }) {
                         /></p>
                         <div className="flex items-center justify-center h-[30px] w-[30px] bg-white border-2 border-b-gray rounded-full absolute top-[1/2] right-0 translate-x-[15px] cursor-pointer" onClick={handleMenuSizeChange}> {isSideBarCollapsed ? <RightOutlined className="text-t-gray" /> : <LeftOutlined className="text-t-gray" />}</div>
                     </div>
-                    <div className="flex flex-col px-4 pt-4 text-sm h-7/8 overflow-auto transition duration-2000 ease-in-out delay-1000">
+                    <div className="flex flex-col gap-1 px-4 pt-4 text-sm h-7/8 overflow-auto transition duration-2000 ease-in-out delay-1000">
                         {navItems.map((e) => {
                             if (!isSideBarCollapsed) {
                                 return (
@@ -98,28 +69,13 @@ export default function DashboardLayout({ children }) {
             <motion.div
                 animate={isSideBarCollapsed ? 'closed' : 'opened'}
                 variants={variants2}
-                transition={{ duration: 0.5 }} // Adjust duration as needed
+                transition={{ duration: 3}} // Adjust duration as needed
                 className={`bg-white w-5/6`}>
                 <div className="flex flex-col h-full">
-                    <div className="flex items-center justify-between h-1/8 border-b-gray border-b-2 px-12">
-                        <Input className="w-80" placeholder="Search..." />
-                        <div className="flex gap-2">
-                            <div className="flex items-center justify-center rounded-full hover:bg-gray-200 h-8 w-8">
-                                <Badge count={5}>
-                                    <IoChatbubbleEllipsesOutline className={"text-black"} size={20} />
-                                </Badge>
-                            </div>
-                            <div className="flex items-center justify-center rounded-full hover:bg-gray-200 h-8 w-8">
-                                <Badge count={3}>
-                                    <MdOutlineNotificationsNone className={"text-black"} size={20} />
-                                </Badge>
-                            </div>
-                            <div className="flex items-center justify-center rounded-full hover:bg-gray-200 h-8 w-8">
-                                <CgProfile className={"text-black"} size={20} />
-                            </div>
-                        </div>
+                    <div className='flex items-center justify-between h-1/8 border-b-gray border-b-2 px-12'>
+                        <UserToolbar />
                     </div>
-                    <div className="flex flex-col bg-b-white overflow-auto h-7/8 px-6 pt-6 gap-4">
+                    <div className="flex flex-col bg-b-white overflow-auto h-7/8 px-6 py-6 gap-4">
                         {children}
                     </div>
 
