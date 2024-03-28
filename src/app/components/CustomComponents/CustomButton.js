@@ -1,17 +1,17 @@
 import { Button } from 'antd';
 import Link from 'next/link';
+import { ConfigProvider } from 'antd';
 
 export const CustomButton = ({ text, color, size, icon, classes, link }) => {
   if (link) {
     return (
       <Link href={link}>
         <Button
-          className={`bg-${color} hover:bg-white hover:border-${color} hover:border-1 hover:text-${color} text-white ${classes}`}
+          className={`bg-${color} hover:bg-white hover:border-${color} hover:border-1 hover:text-[#2C318B] text-white ${classes}`}
           type="ghost"
           size={size}
           icon={icon}>
-          {' '}
-          {text}{' '}
+          {text}
         </Button>
       </Link>
     );
@@ -22,8 +22,7 @@ export const CustomButton = ({ text, color, size, icon, classes, link }) => {
         type="ghost"
         size={size}
         icon={icon}>
-        {' '}
-        {text}{' '}
+        {text}
       </Button>
     );
   }
