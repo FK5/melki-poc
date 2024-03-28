@@ -10,7 +10,7 @@ import { CustomButton } from './CustomComponents/CustomButton';
 
 export const CustomKanban = () => {
   return (
-    <div className="h-screen w-full bg-neutral-900 text-neutral-50">
+    <div className="h-screen w-full bg-white text-t-gray">
       <Board />
     </div>
   );
@@ -22,21 +22,21 @@ const Board = () => {
   return (
     <div className="flex h-full w-full gap-12 overflow-scroll p-12">
       <Column
-        title="Backlog"
+        title="TASKS DONE"
         column="backlog"
         headingColor="text-neutral-500"
         cards={cards}
         setCards={setCards}
       />
       <Column
-        title="TODO"
+        title="TASKS DUE"
         column="todo"
         headingColor="text-yellow-200"
         cards={cards}
         setCards={setCards}
       />
       <Column
-        title="In progress"
+        title="FUTURE TASKS"
         column="doing"
         headingColor="text-blue-200"
         cards={cards}
@@ -159,15 +159,15 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   return (
     <div className="w-80 shrink-0">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className={`font-medium ${headingColor}`}>{title}</h3>
-        <span className="rounded text-sm text-neutral-400">{filteredCards.length}</span>
+        <h3 className={`font-semibold text-black`}>{title}</h3>
+        <span className="rounded text-sm text-black">({filteredCards.length})</span>
       </div>
       <div
         onDrop={handleDragEnd}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         className={`h-full w-full transition-colors ${
-          active ? 'bg-neutral-800/50' : 'bg-neutral-800/0'
+          active ? 'bg-gray-400/50' : 'bg-gray-800/0'
         }`}>
         {filteredCards.map((c) => {
           return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
@@ -188,7 +188,7 @@ const Card = ({ title, id, column, handleDragStart }) => {
         layoutId={id}
         draggable="true"
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
-        className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing">
+        className="cursor-grab rounded border border-gray-400 bg-gray-100/50 p-3 active:cursor-grabbing">
         <div className="flex flex-col">
           <div className="flex justify-between items-center text-xs">
             <Tag color="green"><div className='flex items-center gap-1'> <PiClock/> <p className='text-xs'>00:00</p></div></Tag>
@@ -201,10 +201,10 @@ const Card = ({ title, id, column, handleDragStart }) => {
             <p>Task Name</p>
           </div>
           <Divider plain={true} className='my-2'/>
-           <p className="text-sm text-neutral-100">{title}</p>
+           <p className="text-sm text-black">{title}</p>
           <Divider plain={true} className='my-2'/>
 
-          <CustomButton color={"priamry"} text={"View Task"} link={"/dashboard"}/>
+          {/* <CustomButton color={"priamry"} text={"View Task"} link={"/dashboard"}/> */}
         </div>
       </motion.div>
     </>
@@ -216,7 +216,7 @@ const DropIndicator = ({ beforeId, column }) => {
     <div
       data-before={beforeId || '-1'}
       data-column={column}
-      className="my-0.5 h-0.5 w-full bg-violet-400 opacity-0"
+      className="my-0.5 h-0.5 w-full bg-primary opacity-0"
     />
   );
 };
