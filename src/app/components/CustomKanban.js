@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { FiPlus, FiTrash } from "react-icons/fi";
-import { motion } from "framer-motion";
-import { FaFire } from "react-icons/fa";
+import React, { useState } from 'react';
+import { FiPlus, FiTrash } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { FaFire } from 'react-icons/fa';
+
+import { Divider, Tag } from 'antd';
+
+import { PiClock } from "react-icons/pi";
+import { CustomButton } from './CustomComponents/CustomButton';
 
 export const CustomKanban = () => {
   return (
-    <div className="h-full w-full bg-white text-neutral-50">
+    <div className="h-screen w-full bg-neutral-900 text-neutral-50">
       <Board />
     </div>
   );
@@ -15,36 +20,36 @@ const Board = () => {
   const [cards, setCards] = useState(DEFAULT_CARDS);
 
   return (
-    <div className="flex h-full w-full gap-3 overflow-scroll p-12">
+    <div className="flex h-full w-full gap-12 overflow-scroll p-12">
       <Column
-        title="Future Tasks"
+        title="Backlog"
         column="backlog"
-        headingColor="text-black"
+        headingColor="text-neutral-500"
         cards={cards}
         setCards={setCards}
       />
-      {/* <Column
+      <Column
         title="TODO"
         column="todo"
         headingColor="text-yellow-200"
         cards={cards}
         setCards={setCards}
-      /> */}
+      />
       <Column
-        title="Tasks Due"
+        title="In progress"
         column="doing"
-        headingColor="text-black"
+        headingColor="text-blue-200"
         cards={cards}
         setCards={setCards}
       />
       <Column
-        title="Tasks Done"
+        title="Complete"
         column="done"
-        headingColor="text-black"
+        headingColor="text-emerald-200"
         cards={cards}
         setCards={setCards}
       />
-      <BurnBarrel setCards={setCards} />
+      {/* <BurnBarrel setCards={setCards} /> */}
     </div>
   );
 };
@@ -53,11 +58,11 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   const [active, setActive] = useState(false);
 
   const handleDragStart = (e, card) => {
-    e.dataTransfer.setData("cardId", card.id);
+    e.dataTransfer.setData('cardId', card.id);
   };
 
   const handleDragEnd = (e) => {
-    const cardId = e.dataTransfer.getData("cardId");
+    const cardId = e.dataTransfer.getData('cardId');
 
     setActive(false);
     clearHighlights();
@@ -65,7 +70,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
     const indicators = getIndicators();
     const { element } = getNearestIndicator(e, indicators);
 
-    const before = element.dataset.before || "-1";
+    const before = element.dataset.before || '-1';
 
     if (before !== cardId) {
       let copy = [...cards];
@@ -76,7 +81,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
 
       copy = copy.filter((c) => c.id !== cardId);
 
-      const moveToBack = before === "-1";
+      const moveToBack = before === '-1';
 
       if (moveToBack) {
         copy.push(cardToTransfer);
@@ -102,7 +107,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
     const indicators = els || getIndicators();
 
     indicators.forEach((i) => {
-      i.style.opacity = "0";
+      i.style.opacity = '0';
     });
   };
 
@@ -113,7 +118,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
 
     const el = getNearestIndicator(e, indicators);
 
-    el.element.style.opacity = "1";
+    el.element.style.opacity = '1';
   };
 
   const getNearestIndicator = (e, indicators) => {
@@ -133,7 +138,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
       },
       {
         offset: Number.NEGATIVE_INFINITY,
-        element: indicators[indicators.length - 1],
+        element: indicators[indicators.length - 1]
       }
     );
 
@@ -152,21 +157,18 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   const filteredCards = cards.filter((c) => c.column === column);
 
   return (
-    <div className="w-56 shrink-0">
+    <div className="w-80 shrink-0">
       <div className="mb-3 flex items-center justify-between">
         <h3 className={`font-medium ${headingColor}`}>{title}</h3>
-        <span className="rounded text-sm text-neutral-400">
-          {filteredCards.length}
-        </span>
+        <span className="rounded text-sm text-neutral-400">{filteredCards.length}</span>
       </div>
       <div
         onDrop={handleDragEnd}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         className={`h-full w-full transition-colors ${
-          active ? "bg-gray-300/50" : "bg-gray-300/0"
-        }`}
-      >
+          active ? 'bg-neutral-800/50' : 'bg-neutral-800/0'
+        }`}>
         {filteredCards.map((c) => {
           return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
         })}
@@ -186,9 +188,24 @@ const Card = ({ title, id, column, handleDragStart }) => {
         layoutId={id}
         draggable="true"
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
-        className="cursor-grab rounded border border-neutral-700 bg-gray-300 p-3 active:cursor-grabbing"
-      >
-        <p className="text-sm text-black">{title}</p>
+        className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing">
+        <div className="flex flex-col">
+          <div className="flex justify-between items-center text-xs">
+            <Tag color="green"><div className='flex items-center gap-1'> <PiClock/> <p className='text-xs'>00:00</p></div></Tag>
+            <p>Due on 20/03/2024</p>
+            <Tag color="green"><p className='text-xs'>Normal</p> </Tag>
+          </div>
+          <Divider plain={true} className='my-2'/>
+          <div className="flex justify-between items-center text-xs">
+            <p>Client Name</p>
+            <p>Task Name</p>
+          </div>
+          <Divider plain={true} className='my-2'/>
+           <p className="text-sm text-neutral-100">{title}</p>
+          <Divider plain={true} className='my-2'/>
+
+          <CustomButton color={"priamry"} text={"View Task"} link={"/dashboard"}/>
+        </div>
       </motion.div>
     </>
   );
@@ -197,7 +214,7 @@ const Card = ({ title, id, column, handleDragStart }) => {
 const DropIndicator = ({ beforeId, column }) => {
   return (
     <div
-      data-before={beforeId || "-1"}
+      data-before={beforeId || '-1'}
       data-column={column}
       className="my-0.5 h-0.5 w-full bg-violet-400 opacity-0"
     />
@@ -217,7 +234,7 @@ const BurnBarrel = ({ setCards }) => {
   };
 
   const handleDragEnd = (e) => {
-    const cardId = e.dataTransfer.getData("cardId");
+    const cardId = e.dataTransfer.getData('cardId');
 
     setCards((pv) => pv.filter((c) => c.id !== cardId));
 
@@ -231,17 +248,16 @@ const BurnBarrel = ({ setCards }) => {
       onDragLeave={handleDragLeave}
       className={`mt-10 grid h-56 w-56 shrink-0 place-content-center rounded border text-3xl ${
         active
-          ? "border-red-800 bg-red-800/20 text-red-500"
-          : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
-      }`}
-    >
+          ? 'border-red-800 bg-red-800/20 text-red-500'
+          : 'border-neutral-500 bg-neutral-500/20 text-neutral-500'
+      }`}>
       {active ? <FaFire className="animate-bounce" /> : <FiTrash />}
     </div>
   );
 };
 
 const AddCard = ({ column, setCards }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [adding, setAdding] = useState(false);
 
   const handleSubmit = (e) => {
@@ -252,7 +268,7 @@ const AddCard = ({ column, setCards }) => {
     const newCard = {
       column,
       title: text.trim(),
-      id: Math.random().toString(),
+      id: Math.random().toString()
     };
 
     setCards((pv) => [...pv, newCard]);
@@ -273,14 +289,12 @@ const AddCard = ({ column, setCards }) => {
           <div className="mt-1.5 flex items-center justify-end gap-1.5">
             <button
               onClick={() => setAdding(false)}
-              className="px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-black"
-            >
+              className="px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50">
               Close
             </button>
             <button
               type="submit"
-              className="flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300"
-            >
+              className="flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300">
               <span>Add</span>
               <FiPlus />
             </button>
@@ -290,8 +304,7 @@ const AddCard = ({ column, setCards }) => {
         <motion.button
           layout
           onClick={() => setAdding(true)}
-          className="flex w-full items-center gap-1.5 px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-black"
-        >
+          className="flex w-full items-center gap-1.5 px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50">
           <span>Add card</span>
           <FiPlus />
         </motion.button>
@@ -302,30 +315,30 @@ const AddCard = ({ column, setCards }) => {
 
 const DEFAULT_CARDS = [
   // BACKLOG
-  { title: "Look into render bug in dashboard", id: "1", column: "backlog" },
-  { title: "SOX compliance checklist", id: "2", column: "backlog" },
-  { title: "[SPIKE] Migrate to Azure", id: "3", column: "backlog" },
-  { title: "Document Notifications service", id: "4", column: "backlog" },
+  { title: 'Look into render bug in dashboard', id: '1', column: 'backlog' },
+  { title: 'SOX compliance checklist', id: '2', column: 'backlog' },
+  { title: '[SPIKE] Migrate to Azure', id: '3', column: 'backlog' },
+  { title: 'Document Notifications service', id: '4', column: 'backlog' },
   // TODO
   {
-    title: "Research DB options for new microservice",
-    id: "5",
-    column: "todo",
+    title: 'Research DB options for new microservice',
+    id: '5',
+    column: 'todo'
   },
-  { title: "Postmortem for outage", id: "6", column: "todo" },
-  { title: "Sync with product on Q3 roadmap", id: "7", column: "todo" },
+  { title: 'Postmortem for outage', id: '6', column: 'todo' },
+  { title: 'Sync with product on Q3 roadmap', id: '7', column: 'todo' },
 
   // DOING
   {
-    title: "Refactor context providers to use Zustand",
-    id: "8",
-    column: "doing",
+    title: 'Refactor context providers to use Zustand',
+    id: '8',
+    column: 'doing'
   },
-  { title: "Add logging to daily CRON", id: "9", column: "doing" },
+  { title: 'Add logging to daily CRON', id: '9', column: 'doing' },
   // DONE
   {
-    title: "Set up DD dashboards for Lambda listener",
-    id: "10",
-    column: "done",
-  },
+    title: 'Set up DD dashboards for Lambda listener',
+    id: '10',
+    column: 'done'
+  }
 ];
