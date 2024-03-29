@@ -8,6 +8,6 @@ export default function ActionButton({ link, icon, classes, text, type }) {
     const router = useRouter()
     type
     return (
-        <Button className={`bg-${type} `+classes} icon={icon} onClick={() => router.push(link)}> {text} </Button>
+        <Button className={`bg-${type} `+classes} size='large' icon={icon} onClick={() => router.push(link)}> {text} </Button>
     )
 }

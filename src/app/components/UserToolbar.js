@@ -11,7 +11,7 @@ import { primary } from "../variables/colors";
 export const UserToolbar = () => {
     return (
         <>
-            <CustomInput classes="w-80" placeholder="Search..." />
+            <CustomInput classes="w-80" placeholder="Search App..." />
             <div className="flex gap-2">
                 <div className="flex items-center justify-center rounded-full hover:bg-gray-200 h-8 w-8">
                     <Badge color={primary} count={5}>
