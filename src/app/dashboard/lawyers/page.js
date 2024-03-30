@@ -271,57 +271,57 @@ export default function Lawyers() {
         />
       </div>
       <Drawer title="Add Lawyer" width={'55%'} onClose={onClose} open={drawerOpen}>
-        <div className="flex">
-          <div className="flex flex-col">
+        <div className="flex gap-8">
+          <div className="flex flex-col w-1/2">
             <Title level={4}> Personal Information</Title>
 
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Email*</Title>
-              <Input className="w-72" placeholder="Email" />
+              <Input className="w-full" placeholder="Email" />
             </div>
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Password*</Title>
-              <Input className="w-72" placeholder="Password" />
+              <Input className="w-full" placeholder="Password" />
             </div>
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Full Name*</Title>
-              <Input className="w-72" placeholder="Full Name" />
+              <Input className="w-full" placeholder="Full Name" />
             </div>
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Phone*</Title>
-              <Input className="w-72" placeholder="Phone" />
+              <Input className="w-full" placeholder="Phone" />
             </div>
 
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Street Address</Title>
-              <Input className="w-72" placeholder="Street Address" />
+              <Input className="w-full" placeholder="Street Address" />
             </div>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col w-1/2">
             <Title level={4}> Additional Details</Title>
 
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Lawyer Role*</Title>
-              <Input className="w-72" placeholder="Lawyer Role" />
+              <Input className="w-full" placeholder="Lawyer Role" />
             </div>
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Hourly Rate*</Title>
-              <Input className="w-72" placeholder="Hourly Rate" />
+              <Input className="w-full" placeholder="Hourly Rate" />
             </div>
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>MOF Number</Title>
-              <Input className="w-72" placeholder="MOF Number" />
+              <Input className="w-full" placeholder="MOF Number" />
             </div>
-            <div className="flex flex-col w-[24rem] justify-between mb-4">
+            <div className="flex flex-col w-full justify-between mb-4">
               <Title level={5}>Notes</Title>
-              <TextArea className="w-72" placeholder="Notes" rows={4} />
+              <TextArea className="w-full" placeholder="Notes" rows={4} />
             </div>
           </div>
         </div>
         <ActionButton
           link={''}
-          classes={'text-white w-24'}
+          classes={'text-white w-24 mt-8'}
           icon={<FormOutlined />}
           text={'Create'}
           type={'primary'}
