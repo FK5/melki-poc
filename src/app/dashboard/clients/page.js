@@ -1,16 +1,15 @@
 'use client';
 import React from 'react';
-import { Space, Table, Tag, Input, Drawer, Typography, Upload, DatePicker } from 'antd';
-import { Button, Flex } from 'antd';
-import { FormOutlined, FileOutlined } from '@ant-design/icons';
-import Link from 'next/link';
-import ActionButton from '@/app/components/actionButton';
+import { Space, Table, Input, Drawer, Typography, Upload, DatePicker } from 'antd';
+import { Button } from 'antd';
+import { FormOutlined } from '@ant-design/icons';
+
 import { UploadOutlined } from '@ant-design/icons';
 
-import { useState } from 'react';
-import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
+import { useWindowDimensions } from '@/app/hooks/useWindowDimensions';
 
-import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
 
 // add these to divs flex-shrink-0 flex-grow-0 flex-basis-auto
 
@@ -19,6 +18,14 @@ export default function Clients() {
   const { TextArea } = Input;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const { height } = useWindowDimensions();
+
+  const [tableHeight, setTableHeight] = useState(0);
+
+  useEffect(() => {
+    setTableHeight(height - height / 8 - 240);
+  }, []);
 
   const showDrawer = () => {
     setDrawerOpen(true);
@@ -199,17 +206,19 @@ export default function Clients() {
   };
   return (
     <>
-      <div className="flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-2 px-2 h-full ">
-        <div className="flex justify-between">
-          <Input className="w-80" placeholder="Search..." />
+      <div className="flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-4 px-4 h-full ">
+        <div className="flex justify-between items-center">
+          <Input size="small" className="w-80 h-8" placeholder="Search Clients..." />
           <div className="flex gap-4">
             <CustomButton
+              size={'large'}
               text={'Reports'}
               type={'secondary'}
               onClick={() => showDrawer()}
             />
 
             <CustomButton
+              size={'large'}
               icon={<FormOutlined />}
               text={'Create'}
               type={'primary'}
@@ -218,8 +227,7 @@ export default function Clients() {
           </div>
         </div>
         <Table
-          className="h-fit overflow-y-auto"
-          scroll={{ y: 350 }}
+          scroll={{ y: tableHeight }}
           sticky={true}
           columns={columns}
           dataSource={data}
@@ -289,6 +297,14 @@ export default function Clients() {
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           </div>
+        </div>
+        <div>
+          <CustomButton
+            size={'large'}
+            text={'Create'}
+            type={'primary'}
+            onClick={() => showDrawer()}
+          />
         </div>
       </Drawer>
     </>

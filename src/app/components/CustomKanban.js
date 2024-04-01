@@ -5,7 +5,7 @@ import { FaFire } from 'react-icons/fa';
 
 import { Divider, Tag } from 'antd';
 
-import { PiClock } from "react-icons/pi";
+import { PiClock } from 'react-icons/pi';
 import { CustomButton } from './CustomComponents/CustomButton';
 
 export const CustomKanban = () => {
@@ -20,7 +20,7 @@ const Board = () => {
   const [cards, setCards] = useState(DEFAULT_CARDS);
 
   return (
-    <div className="flex h-full w-full gap-12 overflow-scroll p-12">
+    <div className="flex h-full w-full gap-10 overflow-scroll p-12">
       <Column
         title="TASKS DONE"
         column="backlog"
@@ -42,13 +42,13 @@ const Board = () => {
         cards={cards}
         setCards={setCards}
       />
-      <Column
+      {/* <Column
         title="Complete"
         column="done"
         headingColor="text-emerald-200"
         cards={cards}
         setCards={setCards}
-      />
+      /> */}
       {/* <BurnBarrel setCards={setCards} /> */}
     </div>
   );
@@ -188,23 +188,28 @@ const Card = ({ title, id, column, handleDragStart }) => {
         layoutId={id}
         draggable="true"
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
-        className="cursor-grab rounded border border-gray-400 bg-gray-100/50 p-3 active:cursor-grabbing">
+        className="cursor-grab rounded border border-gray-200 bg-gray-100/20 shadow-md shadow-neutral-300 p-4 active:cursor-grabbing">
         <div className="flex flex-col">
-          <div className="flex justify-between items-center text-xs">
-            <Tag color="green"><div className='flex items-center gap-1'> <PiClock/> <p className='text-xs'>00:00</p></div></Tag>
-            <p>Due on 20/03/2024</p>
-            <Tag color="green"><p className='text-xs'>Normal</p> </Tag>
-          </div>
-          <Divider plain={true} className='my-2'/>
+          <p className="text-md font-medium text-black mb-1">{title}</p>
+
+          <Divider plain={true} className="my-3" />
           <div className="flex justify-between items-center text-xs">
             <p>Client Name</p>
-            <p>Task Name</p>
+            <p>Task ID</p>
           </div>
-          <Divider plain={true} className='my-2'/>
-           <p className="text-sm text-black">{title}</p>
-          <Divider plain={true} className='my-2'/>
-
-          {/* <CustomButton color={"priamry"} text={"View Task"} link={"/dashboard"}/> */}
+          <Divider plain={true} className="my-2" />
+          <div className="flex justify-between items-center text-xs">
+            <Tag className="mr-0" color="green">
+              <div className="flex items-center gap-1">
+                {' '}
+                <PiClock /> <p className="text-xs">00:00</p>
+              </div>
+            </Tag>
+            <p>Due on 20/03/2024</p>
+            <Tag className="mr-0" color="green">
+              <p className="text-xs">Normal</p>{' '}
+            </Tag>
+          </div>
         </div>
       </motion.div>
     </>

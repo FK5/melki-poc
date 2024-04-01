@@ -9,6 +9,8 @@ import Image from 'next/image';
 
 import { motion } from 'framer-motion';
 
+import { Breadcrumb } from 'antd';
+
 import { navItems } from '../variables/NavBarItems';
 import { UserToolbar } from '../components/UserToolbar';
 
@@ -155,6 +157,23 @@ export default function DashboardLayout({ children }) {
             <UserToolbar />
           </div>
           <div className="flex flex-col bg-b-white overflow-auto h-7/8 px-6 py-6 gap-4">
+            {/* TODO: ASK YARA */}
+            {/* <Breadcrumb
+              items={[
+                {
+                  title: 'Dashboard'
+                },
+                {
+                  title: <a href="">Application Center</a>
+                },
+                {
+                  title: <a href="">Application List</a>
+                },
+                {
+                  title: 'An Application'
+                }
+              ]}
+            />  */}
             {children}
           </div>
         </div>

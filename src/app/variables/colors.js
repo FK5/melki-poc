@@ -1,8 +1,8 @@
 export const primary = '#2C318B';
 
-export const primary100 = '#FFFFFF';
-export const primary200 = '#CDCFEF';
-export const primary300 = '#9C9FE0';
+export const primary100 = '#FFFFFF'; //contrast no compliant
+export const primary200 = '#CDCFEF'; //contrast no compliant
+export const primary300 = '#9C9FE0'; //contrast no compliant
 export const primary400 = '#6A6FD0';
 export const primary500 = '#3C42BD';
 

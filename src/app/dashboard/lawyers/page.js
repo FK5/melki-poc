@@ -5,12 +5,11 @@ import { Typography } from 'antd';
 import { Table, Tag, Input } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
-import { CustomInput } from '@/app/components/CustomComponents/CustomInput';
 
 import { useState, useEffect, useRef } from 'react';
+import { useWindowDimensions } from '@/app/hooks/useWindowDimensions';
 
 import { Drawer } from 'antd';
-import ActionButton from '@/app/components/actionButton';
 // add these to divs flex-shrink-0 flex-grow-0 flex-basis-auto
 
 export default function Lawyers() {
@@ -19,7 +18,7 @@ export default function Lawyers() {
 
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
-  const [h, setH] = useState(0);
+  const [tableHeight, setTableHeight] = useState(0);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -29,6 +28,8 @@ export default function Lawyers() {
       pageSize: 10
     }
   });
+
+  const { height } = useWindowDimensions();
 
   const showDrawer = () => {
     setDrawerOpen(true);
@@ -241,7 +242,7 @@ export default function Lawyers() {
       console.log('Div Height:', searchBarRef.current.offsetHeight);
       console.log('Div Height:', pageRef.current.offsetHeight);
       console.log(pageRef.current.offsetHeight - searchBarRef.current.offsetHeight - 150);
-      setH(pageRef.current.offsetHeight - searchBarRef.current.offsetHeight - 150);
+      setTableHeight(height - height / 8 - 237);
     }
   };
 
@@ -250,21 +251,19 @@ export default function Lawyers() {
       <div
         ref={pageRef}
         className="flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-4 px-4 h-full">
-        <div ref={searchBarRef} className="flex justify-between">
-          <CustomInput classes="w-80" placeholder="Search Lawyers..." />
+        <div ref={searchBarRef} className="flex justify-between items-center">
+          <Input className="w-80 h-8" placeholder="Search Lawyers..." />
           <CustomButton
-            // link={'/dashboard/lawyers/add'}
             size={'large'}
-            classes={'w-24'}
             icon={<FormOutlined />}
             text={'Create'}
-            color={'primary'}
+            type={'primary'}
             onClick={() => showDrawer()}
           />
         </div>
         <Table
           columns={columns}
-          scroll={{ y: h }}
+          scroll={{ y: tableHeight }}
           loading={loading}
           dataSource={data}
           onChange={onChange}
@@ -319,12 +318,11 @@ export default function Lawyers() {
             </div>
           </div>
         </div>
-        <ActionButton
-          link={''}
-          classes={'text-white w-24 mt-8'}
-          icon={<FormOutlined />}
+        <CustomButton
+          size={'large'}
           text={'Create'}
           type={'primary'}
+          onClick={() => showDrawer()}
         />
       </Drawer>
     </>

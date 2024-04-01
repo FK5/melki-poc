@@ -35,11 +35,11 @@ body {
 /* TABLE COMPONENT */
 .ant-table-wrapper .ant-pagination-item-active {
   background-color: #ffffff;
-  border-color: #2c318b;
+  border-color: #2C318B;
 }
 
 .ant-table-wrapper .ant-pagination-item-active a {
-  color: #2c318b;
+  color: #2C318B;
 }
 
 .ant-table-wrapper:hover .ant-pagination-item-active {
@@ -52,20 +52,15 @@ body {
 }
 /* END OF TABLE COMPONENT */
 
+/* INPUT COMPONENT */
+.ant-input:hover {
+  border-color: #3C42BD;
+}
 
-/* #palete */
-/* 
-100   #FFFFFF                -contrast not complaiant
-200   #CDCFEF                -contrast not complaiant
-300   #9C9FE0                -contrast not complaiant
-400   #6A6FD0
-500   #3C42BD
-600   #2C318B (PRIMARY)
-700   #212569
-800   #161846
-900   #0B0C23
-1000  #000000
-*/
+.ant-input:active, .ant-input:focus{
+  border-color: #2C318B;
+}
+/* END OF INPUT COMPONENT */
 
 /* 
 text 1000 #292a32
