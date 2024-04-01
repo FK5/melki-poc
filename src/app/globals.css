@@ -18,12 +18,9 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
@@ -31,3 +28,46 @@ body {
     text-wrap: balance;
   }
 }
+
+
+/* ANTD compnents color change */
+
+/* TABLE COMPONENT */
+.ant-table-wrapper .ant-pagination-item-active {
+  background-color: #ffffff;
+  border-color: #2c318b;
+}
+
+.ant-table-wrapper .ant-pagination-item-active a {
+  color: #2c318b;
+}
+
+.ant-table-wrapper:hover .ant-pagination-item-active {
+  background-color: #ffffff;
+  border-color: #3C42BD;
+}
+
+.ant-table-wrapper:hover .ant-pagination-item-active a {
+  color: #3C42BD;
+}
+/* END OF TABLE COMPONENT */
+
+
+/* #palete */
+/* 
+100   #FFFFFF                -contrast not complaiant
+200   #CDCFEF                -contrast not complaiant
+300   #9C9FE0                -contrast not complaiant
+400   #6A6FD0
+500   #3C42BD
+600   #2C318B (PRIMARY)
+700   #212569
+800   #161846
+900   #0B0C23
+1000  #000000
+*/
+
+/* 
+text 1000 #292a32
+text 800  #36363f
+*/

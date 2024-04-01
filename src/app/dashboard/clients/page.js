@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Space, Table, Tag, Input, Drawer, Typography, Upload, DatePicker  } from 'antd';
+import { Space, Table, Tag, Input, Drawer, Typography, Upload, DatePicker } from 'antd';
 import { Button, Flex } from 'antd';
 import { FormOutlined, FileOutlined } from '@ant-design/icons';
 import Link from 'next/link';
@@ -9,6 +9,9 @@ import { UploadOutlined } from '@ant-design/icons';
 
 import { useState } from 'react';
 import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
+
+import styled from 'styled-components';
+
 // add these to divs flex-shrink-0 flex-grow-0 flex-basis-auto
 
 export default function Clients() {
@@ -200,17 +203,16 @@ export default function Clients() {
         <div className="flex justify-between">
           <Input className="w-80" placeholder="Search..." />
           <div className="flex gap-4">
-            {/* <Link href="/dashboard/clients/add">
-              <Button className="w-24" icon={<FileOutlined />}>
-                Reports
-              </Button>
-            </Link> */}
             <CustomButton
-              //   link={'/dashboard/clients/add'}
-              classes={'text-white w-24'}
+              text={'Reports'}
+              type={'secondary'}
+              onClick={() => showDrawer()}
+            />
+
+            <CustomButton
               icon={<FormOutlined />}
               text={'Create'}
-              color={'primary'}
+              type={'primary'}
               onClick={() => showDrawer()}
             />
           </div>
@@ -288,13 +290,6 @@ export default function Clients() {
             </Upload>
           </div>
         </div>
-        <ActionButton
-          link={''}
-          classes={'text-white w-24 mt-4'}
-          icon={<FormOutlined />}
-          text={'Create'}
-          type={'primary'}
-        />
       </Drawer>
     </>
   );

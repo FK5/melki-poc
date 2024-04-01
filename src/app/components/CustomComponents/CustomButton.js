@@ -1,31 +1,31 @@
-import { Button } from 'antd';
-import Link from 'next/link';
-import { ConfigProvider } from 'antd';
+'use client';
 
-export const CustomButton = ({ text, color, size, icon, classes, link, onClick }) => {
-  if (link) {
-    return (
-      <Link href={link}>
-        <Button
-          className={`bg-${color} hover:bg-white hover:border-${color} hover:border-1 hover:text-[#2C318B] text-white ${classes}`}
-          type="ghost"
-          size={size}
-          icon={icon}
-          onClick={()=>onClick()}>
-          {text}
-        </Button>
-      </Link>
-    );
-  } else {
-    return (
-      <Button
-        className={`bg-${color} hover:bg-white hover:border-${color} hover:border-1 hover:text-${color} text-white ${classes}`}
-        type="ghost"
-        size={size}
-        icon={icon}
-        onClick={()=>onClick()}>
-        {text}
-      </Button>
-    );
-  }
+import { Button } from 'antd';
+import { useRouter } from 'next/navigation';
+
+export const CustomButton = ({ text, size, icon, type, link, onClick }) => {
+  const router = useRouter();
+
+  const primaryClasses = `bg-primary text-white hover:bg-primary-500 active:bg-primary-700`;
+  const secondaryClasses = `border-gray-300 text-black hover:text-primary hover:border-primary active:text-primary-700 active:border-primary-700`;
+  // const secondaryClasses = `bg-white text-[${black800}] border-[#e4ge4g] hover:text-[${primary}] hover:border-[${primary}] active:text-[${primary700}] active:border-[${primary700}]`;
+
+  return (
+    <Button
+      type="ghost"
+      size={size}
+      icon={icon}
+      className={`${type === 'primary' ? primaryClasses : secondaryClasses} `}
+      onClick={() => {
+        if (link) {
+          router.push(link);
+          return;
+        }
+        if (onClick) {
+          onClick();
+        }
+      }}>
+      {text}
+    </Button>
+  );
 };
