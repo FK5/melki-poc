@@ -190,9 +190,8 @@ const Card = ({ title, id, column, handleDragStart }) => {
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
         className="cursor-grab rounded border border-gray-200 bg-gray-100/20 shadow-md shadow-neutral-300 p-4 active:cursor-grabbing">
         <div className="flex flex-col">
-          <p className="text-md font-medium text-black mb-1">{title}</p>
+          <p className="text-md font-medium text-black mb-6">{title}</p>
 
-          <Divider plain={true} className="my-3" />
           <div className="flex justify-between items-center text-xs">
             <p>Client Name</p>
             <p>Task ID</p>
