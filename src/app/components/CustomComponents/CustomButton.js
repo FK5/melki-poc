@@ -12,6 +12,7 @@ export const CustomButton = ({ text, size, icon, type, link, onClick }) => {
 
   return (
     <Button
+      htmlType="submit"
       type="ghost"
       size={size}
       icon={icon}

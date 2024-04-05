@@ -4,6 +4,7 @@ import { LeftOutlined } from '@ant-design/icons';
 // import { RightOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { AutoComplete, Popover  } from "antd";
 
 import Image from 'next/image';
 
@@ -162,12 +163,6 @@ export default function DashboardLayout({ children }) {
               items={[
                 {
                   title: 'Dashboard'
-                },
-                {
-                  title: <a href="">Application Center</a>
-                },
-                {
-                  title: <a href="">Application List</a>
                 },
                 {
                   title: 'An Application'

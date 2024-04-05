@@ -60,6 +60,15 @@ body {
 .ant-input:active, .ant-input:focus{
   border-color: #2C318B;
 }
+
+.ant-select-selection-search-input:hover {
+  border-color: #3C42BD;
+}
+
+.ant-select-selection-search-input:active, .ant-select-selection-search-input:focus {
+  border-color: #2C318B;
+
+}
 /* END OF INPUT COMPONENT */
 
 /* 
