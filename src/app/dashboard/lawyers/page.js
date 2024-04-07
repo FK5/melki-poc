@@ -2,7 +2,7 @@
 import React from 'react';
 import { Typography } from 'antd';
 
-import { Table, Tag, Input } from 'antd';
+import { Table, Tag, Input, AutoComplete, Form } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
 
@@ -13,7 +13,7 @@ import { Drawer } from 'antd';
 // add these to divs flex-shrink-0 flex-grow-0 flex-basis-auto
 
 export default function Lawyers() {
-  const { Title } = Typography;
+  const { Title, Text } = Typography;
   const { TextArea } = Input;
 
   const [data, setData] = useState();
@@ -22,12 +22,26 @@ export default function Lawyers() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const [form] = Form.useForm();
+
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
       pageSize: 10
     }
   });
+
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
+  const validateMessages = {
+    required: 'Please enter ${label}.'
+  };
 
   const { height } = useWindowDimensions();
 
@@ -227,6 +241,17 @@ export default function Lawyers() {
       );
     });
   };
+  const customizeRequiredMark = (label, { required }) => (
+    <div className="flex items-center mb-0">
+      <Text className="font-semibold mb-0">{label}</Text>
+      {required ? (
+        <Text className="font-semibold mb-0 ml-1">*</Text>
+      ) : (
+        <></>
+        // <Text className="font-semibold mb-0 ml-1">(optional)</Text>
+      )}
+    </div>
+  );
 
   useEffect(() => {
     fetchData();
@@ -270,60 +295,126 @@ export default function Lawyers() {
         />
       </div>
       <Drawer title="Add Lawyer" width={'55%'} onClose={onClose} open={drawerOpen}>
-        <div className="flex gap-8">
-          <div className="flex flex-col w-1/2">
-            <Title level={4}> Personal Information</Title>
+        <Form
+          requiredMark={customizeRequiredMark}
+          validateMessages={validateMessages}
+          className="w-full"
+          layout={'vertical'}
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}>
+          <div className="flex gap-8">
+            <div className="flex flex-col w-1/2">
+              <Title level={4}> Personal Information</Title>
 
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Email*</Title>
-              <Input className="w-full" placeholder="Email" />
-            </div>
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Password*</Title>
-              <Input className="w-full" placeholder="Password" />
-            </div>
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Full Name*</Title>
-              <Input className="w-full" placeholder="Full Name" />
-            </div>
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Phone*</Title>
-              <Input className="w-full" placeholder="Phone" />
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  className="mb-0"
+                  rules={[
+                    {
+                      required: true
+                    }
+                  ]}>
+                  <Input className="w-full" placeholder="Email" />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item
+                  label="Password"
+                  name="password"
+                  className="mb-0"
+                  rules={[
+                    {
+                      required: true
+                    }
+                  ]}>
+                  <Input className="w-full" placeholder="Password" />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item
+                  label="Full Name"
+                  name="fullName"
+                  className="mb-0"
+                  rules={[
+                    {
+                      required: true
+                    }
+                  ]}>
+                  <Input className="w-full" placeholder="Full Name" />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item
+                  label="Phone"
+                  name="phone"
+                  className="mb-0"
+                  rules={[
+                    {
+                      required: true
+                    }
+                  ]}>
+                  <Input className="w-full" placeholder="Phone" />
+                </Form.Item>
+              </div>
+
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item label="Street Address" name="streetAddress" className="mb-0">
+                  <Input className="w-full" placeholder="Street Address" />
+                </Form.Item>
+              </div>
             </div>
 
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Street Address</Title>
-              <Input className="w-full" placeholder="Street Address" />
+            <div className="flex flex-col w-1/2">
+              <Title level={4}> Additional Details</Title>
+
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item
+                  label="Lawyer Role"
+                  name="lawyerRole"
+                  className="mb-0"
+                  rules={[
+                    {
+                      required: true
+                    }
+                  ]}>
+                  <Input className="w-full" placeholder="Lawyer Role" />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item
+                  label="Horly Rate"
+                  name="hourlyRate"
+                  className="mb-0"
+                  rules={[
+                    {
+                      required: true
+                    }
+                  ]}>
+                  <Input className="w-full" placeholder="Hourly Rate" />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item label="MOF Number" name="mofNumber" className="mb-0">
+                  <Input className="w-full" placeholder="MOF Number" />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col w-full justify-between mb-4">
+                <Form.Item label="Notes" name="notes" className="mb-0">
+                  <TextArea className="w-full" placeholder="Notes" rows={4} />
+                </Form.Item>
+              </div>
             </div>
           </div>
-
-          <div className="flex flex-col w-1/2">
-            <Title level={4}> Additional Details</Title>
-
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Lawyer Role*</Title>
-              <Input className="w-full" placeholder="Lawyer Role" />
-            </div>
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Hourly Rate*</Title>
-              <Input className="w-full" placeholder="Hourly Rate" />
-            </div>
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>MOF Number</Title>
-              <Input className="w-full" placeholder="MOF Number" />
-            </div>
-            <div className="flex flex-col w-full justify-between mb-4">
-              <Title level={5}>Notes</Title>
-              <TextArea className="w-full" placeholder="Notes" rows={4} />
-            </div>
-          </div>
-        </div>
-        <CustomButton
-          size={'large'}
-          text={'Create'}
-          type={'primary'}
-          onClick={() => showDrawer()}
-        />
+          <CustomButton
+            size={'large'}
+            text={'Create'}
+            type={'primary'}
+            onClick={() => showDrawer()}
+          />
+        </Form>
       </Drawer>
     </>
   );
