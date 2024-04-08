@@ -50,6 +50,7 @@ body {
 .ant-table-wrapper:hover .ant-pagination-item-active a {
   color: #3C42BD;
 }
+
 /* END OF TABLE COMPONENT */
 
 /* INPUT COMPONENT */
@@ -57,7 +58,8 @@ body {
   border-color: #3C42BD;
 }
 
-.ant-input:active, .ant-input:focus{
+.ant-input:active,
+.ant-input:focus {
   border-color: #2C318B;
 }
 
@@ -65,11 +67,59 @@ body {
   border-color: #3C42BD;
 }
 
-.ant-select-selection-search-input:active, .ant-select-selection-search-input:focus {
+/* .ant-select-selection-search-input:active,
+.ant-select-selection-search-input:focus {
   border-color: #2C318B;
 
-}
+} */
+
 /* END OF INPUT COMPONENT */
+
+
+.ant-select-outlined:hover {
+  border-color: #2C318B !important;
+}
+
+.ant-select-outlined {
+  border-color: #2C318B !important;
+
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: #2C318B !important;
+}
+
+.ant-radio-button-wrapper:hover {
+  color: #9C9FE0 !important;
+  border-color: #9C9FE0 !important;
+}
+
+.ant-radio-button-wrapper-checked {
+  color: #2C318B !important;
+  border-color: #2C318B !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: #3C42BD !important;
+  color: white !important;
+}
+
+.ant-picker-calendar-date-today {
+  border-color: #3C42BD !important;
+}
+
+.ant-picker-cell-selected>div {
+  background-color: #CDCFEF !important;
+}
+
+.ant-picker-cell-selected .ant-picker-calendar-date-value {
+  color: #3C42BD !important;
+}
+
+.ant-select-selector:hover {
+  border-color: #3C42BD !important;
+}
+
 
 /* 
 text 1000 #292a32

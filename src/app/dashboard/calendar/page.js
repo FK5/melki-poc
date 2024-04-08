@@ -6,8 +6,8 @@ export default function Calendar() {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
   return (
-    <div className="flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-4 px-4 h-full ">
+    <div className="flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-4 px-4 ">
       <CalendarComp onPanelChange={onPanelChange} />
-    </div>
+    </div>  
   );
 }
