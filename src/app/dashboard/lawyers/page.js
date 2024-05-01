@@ -2,7 +2,7 @@
 import React from 'react';
 import { Typography } from 'antd';
 
-import { Table, Tag, Input, AutoComplete, Form } from 'antd';
+import { Table, Tag, Input, AutoComplete, Form, message } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
 
@@ -10,26 +10,30 @@ import { useState, useEffect, useRef } from 'react';
 import { useWindowDimensions } from '@/app/hooks/useWindowDimensions';
 
 import { Drawer } from 'antd';
+import useSWR, { mutate } from 'swr';
+
 // add these to divs flex-shrink-0 flex-grow-0 flex-basis-auto
 
 export default function Lawyers() {
   const { Title, Text } = Typography;
   const { TextArea } = Input;
 
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
+  const [searchVal, setSearchVal] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [form] = Form.useForm();
 
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 10
-    }
-  });
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'This is a success message'
+    });
+  };
 
   const onReset = () => {
     form.resetFields();
@@ -56,124 +60,13 @@ export default function Lawyers() {
   const pageRef = useRef(null);
   const searchBarRef = useRef(null);
 
-  let results = [
-    {
-      key: '1',
-      name: 'John Brown',
-      email: 'john.brown@mail.com',
-      tags: ['nice', 'developer'],
-      workLoad: '10.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      email: 'jim.green@mail.com',
-      tags: ['loser'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      email: 'joe.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '4',
-      name: 'Adam Black',
-      email: 'adam.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '5',
-      name: 'Joe Black',
-      email: 'joe.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '6',
-      name: 'Adam Black',
-      email: 'adam.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '7',
-      name: 'Joe Black',
-      email: 'joe.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '8',
-      name: 'Adam Black',
-      email: 'adam.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '9',
-      name: 'Joe Black',
-      email: 'joe.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '10',
-      name: 'Adam Black',
-      email: 'adam.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '11',
-      name: 'Joe Black',
-      email: 'joe.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    },
-    {
-      key: '13',
-      name: 'Adam Black',
-      email: 'adam.black@mail.com',
-      tags: ['cool', 'teacher'],
-      workLoad: '00.00',
-      past_week_hours: '00.00',
-      past_month_hours: '00.00'
-    }
-  ];
-
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'fullName',
+      key: 'fullName',
       render: (text) => <a>{text}</a>,
-      sorter: (a, b) => ('' + a.name).localeCompare(b.name)
+      sorter: (a, b) => ('' + a.fullName).localeCompare(b.fullName)
     },
     {
       title: 'Email',
@@ -183,11 +76,11 @@ export default function Lawyers() {
     },
     {
       title: 'Roles',
-      key: 'roles',
-      dataIndex: 'roles',
+      key: 'lawyerRole',
+      dataIndex: 'lawyerRole',
       render: (_, { tags }) => (
         <>
-          {tags.map((tag) => {
+          {tags?.map((tag) => {
             let color = tag.length > 5 ? 'geekblue' : 'green';
             if (tag === 'loser') {
               color = 'volcano';
@@ -209,43 +102,23 @@ export default function Lawyers() {
     },
     {
       title: 'Past Week Hrs',
-      dataIndex: 'past_week_hours',
-      key: 'past_week_hours',
-      sorter: (a, b) => Number(a.past_week_hours) - Number(b.past_week_hours)
+      dataIndex: 'pastWeekHours',
+      key: 'pastWeekHours',
+      sorter: (a, b) => Number(a.pastWeekHours) - Number(b.pastWeekHours)
     },
     {
       title: 'Past Month Hrs',
-      dataIndex: 'past_month_hours',
-      key: 'past_month_hours',
-      sorter: (a, b) => Number(a.past_month_hours) - Number(b.past_month_hours)
+      dataIndex: 'pastMonthHours',
+      key: 'pastMonthHours',
+      sorter: (a, b) => Number(a.pastMonthHours) - Number(b.pastMonthHours)
     }
   ];
 
-  const fetchData = () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setData(results);
-      setLoading(false);
-      setTableParams(
-        {
-          ...tableParams,
-          pagination: {
-            ...tableParams.pagination,
-            total: results.length
-            // 200 is mock data, you should read it from server
-            // total: data.totalCount,
-          }
-        },
-        1000
-      );
-    });
-  };
   const customizeRequiredMark = (label, { required }) => (
     <div className="flex items-center mb-0">
       <Text className="font-semibold mb-0">{label}</Text>
       {required ? (
-        <Text className="font-semibold mb-0 ml-1">*</Text>
+        <Text className="font-semibold mb-0 ml-1 text-red-500">*</Text>
       ) : (
         <></>
         // <Text className="font-semibold mb-0 ml-1">(optional)</Text>
@@ -254,9 +127,27 @@ export default function Lawyers() {
   );
 
   useEffect(() => {
-    fetchData();
     getDivHeight();
   }, []);
+
+  const fetcher = (url) => fetch(url).then((r) => r.json());
+
+  const { data, error, isLoading } = useSWR(
+    `https://662ba10dde35f91de158f31b.mockapi.io/api/lawyers`,
+    fetcher
+  );
+
+  const refresh = () => {
+    mutate(`https://662ba10dde35f91de158f31b.mockapi.io/api/lawyers`);
+  };
+
+  const filterData = (data, filterCriteria) => {
+    return filterCriteria
+      ? data.filter((item) => {
+          return item.fullName.toLowerCase().includes(filterCriteria.toLowerCase());
+        })
+      : data;
+  };
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -264,20 +155,29 @@ export default function Lawyers() {
 
   const getDivHeight = () => {
     if (pageRef.current && searchBarRef.current) {
-      console.log('Div Height:', searchBarRef.current.offsetHeight);
-      console.log('Div Height:', pageRef.current.offsetHeight);
-      console.log(pageRef.current.offsetHeight - searchBarRef.current.offsetHeight - 150);
+      // console.log('Div Height:', searchBarRef.current.offsetHeight);
+      // console.log('Div Height:', pageRef.current.offsetHeight);
+      // console.log(pageRef.current.offsetHeight - searchBarRef.current.offsetHeight - 150);
       setTableHeight(height - height / 8 - 237);
     }
   };
 
   return (
     <>
+      {contextHolder}
       <div
         ref={pageRef}
         className="flex flex-col gap-4 flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray bg-white rounded-lg py-4 px-4 h-full">
         <div ref={searchBarRef} className="flex justify-between items-center">
-          <Input className="w-80 h-8" placeholder="Search Lawyers..." />
+          <Input
+            className="w-80 h-8"
+            value={searchVal}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setSearchVal(e.target.value), setFilteredData(filterData(data, e.target.value));
+            }}
+            placeholder="Search Lawyers..."
+          />
           <CustomButton
             size={'large'}
             icon={<FormOutlined />}
@@ -289,8 +189,8 @@ export default function Lawyers() {
         <Table
           columns={columns}
           scroll={{ y: tableHeight }}
-          loading={loading}
-          dataSource={data}
+          loading={isLoading}
+          dataSource={searchVal == '' ? data : filteredData}
           onChange={onChange}
         />
       </div>
@@ -412,7 +312,33 @@ export default function Lawyers() {
             size={'large'}
             text={'Create'}
             type={'primary'}
-            onClick={() => showDrawer()}
+            onClick={async () => {
+              const data = form.getFieldsValue();
+              form
+                .validateFields()
+                .then(async () => {
+                  const response = await fetch(
+                    'https://662ba10dde35f91de158f31b.mockapi.io/api/lawyers',
+                    {
+                      method: 'POST', // Important to set method to POST
+                      headers: { 'Content-Type': 'application/json' }, // Set headers for JSON data
+                      body: JSON.stringify(data) // Convert data to JSON string
+                    }
+                  ).then((response) => {
+                    messageApi.open({
+                      type: 'success',
+                      content: 'Lawyer addded successfully.'
+                    });
+                    onClose();
+                    refresh();
+                    console.log(response);
+                  });
+                  console.log('Form submitted successfully!');
+                })
+                .catch((errorInfo) => {
+                  console.error('Form validation failed:', errorInfo);
+                });
+            }}
           />
         </Form>
       </Drawer>

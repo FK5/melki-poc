@@ -120,6 +120,15 @@ body {
   border-color: #3C42BD !important;
 }
 
+/* LOADING */
+
+.ant-spin-dot-item {
+  background-color: #2C318B !important;
+}
+
+.ant-spin-text {
+  color: #2C318B !important;
+}
 
 /* 
 text 1000 #292a32
