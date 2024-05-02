@@ -26,7 +26,7 @@ module.exports = {
         'b-gray': '#EAEEF3',
         'b-grayy': '#E4GE4F',
         'b-white': '#F5F5FA',
-        't-gray': '#9191A0',
+        't-gray': '#5C5C6A',
       },
       height: {
         '1/8': '12.5%',

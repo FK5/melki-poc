@@ -85,7 +85,7 @@ export default function Dashboard() {
             {/* <div className='flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray rounded-lg py-2 px-2 bg-white'>
                 <Table columns={columns} dataSource={data} />
             </div> */}
-            <div className='flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray rounded-lg py-2 px-2 bg-white'>
+            <div className='flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray rounded-lg py-4 px-4 bg-white'>
                 <CustomKanban />
             </div>
             {/* <div className='flex-shrink-0 flex-grow-0 flex-basis-auto border-2 border-b-gray rounded-lg py-2 px-2 bg-white'>

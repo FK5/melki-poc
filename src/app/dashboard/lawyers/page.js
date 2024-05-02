@@ -2,7 +2,7 @@
 import React from 'react';
 import { Typography } from 'antd';
 
-import { Table, Tag, Input, AutoComplete, Form, message } from 'antd';
+import { Table, Tag, Input, AutoComplete, Form, message, Modal } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { CustomButton } from '@/app/components/CustomComponents/CustomButton';
 
@@ -23,17 +23,14 @@ export default function Lawyers() {
   const [tableHeight, setTableHeight] = useState(0);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isDrawerEdit, setIsDrawerEdit] = useState(false);
+  const [selectedLawyerId, setSelectedLawyerId] = useState(-1);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [form] = Form.useForm();
 
   const [messageApi, contextHolder] = message.useMessage();
-
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'This is a success message'
-    });
-  };
 
   const onReset = () => {
     form.resetFields();
@@ -55,6 +52,44 @@ export default function Lawyers() {
 
   const onClose = () => {
     setDrawerOpen(false);
+    form.resetFields();
+  };
+
+  const handleEditClick = (values) => {
+    form.setFieldsValue(values);
+    setSelectedLawyerId(values.id);
+    setIsDrawerEdit(true);
+    setDrawerOpen(true);
+  };
+
+  const handleDeleteClick = (id) => {
+    setSelectedLawyerId(id);
+    setIsModalOpen(true);
+  };
+
+  const handleOk = async () => {
+    const response = await fetch(
+      `https://662ba10dde35f91de158f31b.mockapi.io/api/lawyers/${selectedLawyerId}`,
+      {
+        method: 'DELETE', // Important to set method to POST
+        headers: { 'Content-Type': 'application/json' }, // Set headers for JSON data
+        body: JSON.stringify(data) // Convert data to JSON string
+      }
+    ).then((response) => {
+      messageApi.open({
+        type: 'success',
+        content: 'Lawyer deleted successfully.'
+      });
+      setIsModalOpen(false);
+
+      onClose();
+      refresh();
+      console.log(response);
+    });
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   const pageRef = useRef(null);
@@ -65,6 +100,7 @@ export default function Lawyers() {
       title: 'Name',
       dataIndex: 'fullName',
       key: 'fullName',
+
       render: (text) => <a>{text}</a>,
       sorter: (a, b) => ('' + a.fullName).localeCompare(b.fullName)
     },
@@ -111,6 +147,18 @@ export default function Lawyers() {
       dataIndex: 'pastMonthHours',
       key: 'pastMonthHours',
       sorter: (a, b) => Number(a.pastMonthHours) - Number(b.pastMonthHours)
+    },
+    {
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
+      width: 100,
+      render: (a) => (
+        <div className="flex gap-2">
+          <a onClick={() => handleEditClick(a)}>Edit</a>
+          <a onClick={() => handleDeleteClick(a.id)}> Delete</a>
+        </div>
+      )
     }
   ];
 
@@ -310,24 +358,31 @@ export default function Lawyers() {
           </div>
           <CustomButton
             size={'large'}
-            text={'Create'}
+            text={isDrawerEdit ? 'Update' : 'Create'}
             type={'primary'}
             onClick={async () => {
               const data = form.getFieldsValue();
+
+              // if (!isDrawerEdit) {
               form
                 .validateFields()
                 .then(async () => {
                   const response = await fetch(
-                    'https://662ba10dde35f91de158f31b.mockapi.io/api/lawyers',
+                    !isDrawerEdit
+                      ? 'https://662ba10dde35f91de158f31b.mockapi.io/api/lawyers'
+                      : `https://662ba10dde35f91de158f31b.mockapi.io/api/lawyers/${selectedLawyerId}`,
                     {
-                      method: 'POST', // Important to set method to POST
+                      method: isDrawerEdit ? 'PUT' : 'POST', // Important to set method to POST
                       headers: { 'Content-Type': 'application/json' }, // Set headers for JSON data
                       body: JSON.stringify(data) // Convert data to JSON string
                     }
                   ).then((response) => {
                     messageApi.open({
                       type: 'success',
-                      content: 'Lawyer addded successfully.'
+                      content: isDrawerEdit
+                        ? 'Lawyer updated successfully.'
+                        : 'Lawyer addded successfully.',
+                      duration: 7
                     });
                     onClose();
                     refresh();
@@ -342,6 +397,17 @@ export default function Lawyers() {
           />
         </Form>
       </Drawer>
+      <Modal
+        title="Confirm Deletion"
+        open={isModalOpen}
+        // onOk={handleOk}
+        // onCancel={handleCancel}
+        footer={[
+          <CustomButton key="back" text={'Cancel'} onClick={handleCancel} />,
+          <CustomButton key="submit" text={'Confirm'} type="primary" onClick={handleOk} />
+        ]}>
+        <p>Are you sure you want to delete this lawyer?</p>
+      </Modal>
     </>
   );
 }
